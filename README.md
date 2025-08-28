@@ -69,18 +69,38 @@ The final consolidated dataset is stored in **`df_final.csv`**, including all ex
 ---
 
 ## 4. Folder Structure
+```
 /scenarios
-├── scenarioXX.rpt # Original SWMM report files
-├── scenarioXX_peak_statistics.csv
-├── scenarioXX_depth_timeseries.png / .pdf
-├── scenarioXX.csv # Structured datasets
-├── scenarioXX.parquet
-├── scenarioXX_audit_report.txt
-...
+   ├── scenarioXX.rpt                # Original SWMM report files
+   ├── scenarioXX_peak_statistics.csv
+   ├── scenarioXX_depth_timeseries.png / .pdf
+   ├── scenarioXX.csv                 # Structured datasets
+   ├── scenarioXX.parquet
+   ├── scenarioXX_audit_report.txt
+   ...
 /outputs
-├── all_scenarios_peak_statistics.csv
-├── all_scenarios_max_curves.pdf
+   ├── all_scenarios_peak_statistics.csv
+   ├── all_scenarios_max_curves.pdf
 scenarios_peak_depth_analysis.py
 scenarios_global_peak_analysis.py
 scenarios_input_audit.py
 scenarios_data_extractor.py
+```
+
+---
+
+## 5. Tools and Technologies
+- **SWMM** for hydrological and hydraulic simulations  
+- **Python (pandas, matplotlib, pySWMM)** for data extraction, analysis, and visualization  
+- **Apache Parquet** for optimized data storage  
+- Audit scripts to ensure **transparency and traceability** of the data  
+
+---
+
+## 6. Notes
+- All depths are expressed in **meters (m)**  
+- Rainfall duration in **minutes (min)**  
+- Volumes in **m³** or **mm**, depending on the variable  
+- Data are suitable for **scientific publications**, **reproducibility studies**, and **machine learning applications**  
+
+---
