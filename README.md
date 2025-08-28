@@ -69,3 +69,19 @@ O resultado final é o arquivo **`df_final.csv`**, consolidando todas as colunas
 ---
 
 ## 4. Estrutura de pastas
+
+/scenarios
+├── scenarioXX.rpt # Arquivos originais do SWMM
+├── scenarioXX_peak_statistics.csv
+├── scenarioXX_depth_timeseries.png / .pdf
+├── scenarioXX.csv # Dados estruturados
+├── scenarioXX.parquet
+├── scenarioXX_audit_report.txt
+...
+/outputs
+├── all_scenarios_peak_statistics.csv
+├── all_scenarios_max_curves.pdf
+scenarios_peak_depth_analysis.py
+scenarios_global_peak_analysis.py
+scenarios_input_audit.py
+scenarios_data_extractor.py
