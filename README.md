@@ -1,80 +1,79 @@
-# Drenagem Urbana – Simulações e Extração de Dados com SWMM
+# Urban Drainage – Simulations and Data Extraction with SWMM
 
-## 1. Contexto
-Este repositório reúne os arquivos, scripts e relatórios gerados a partir de simulações hidrológicas e hidráulicas no **Storm Water Management Model (SWMM)**.  
-O objetivo é analisar o comportamento do sistema de drenagem urbana em diferentes cenários de chuva, impermeabilização e parâmetros do solo, além de consolidar bases de dados para uso em **modelos supervisionados de aprendizado de máquina**.
-
----
-
-## 2. Plano de execução
-
-### (i) Simulação de cenários urbanos no SWMM
-Foram rodados **8 cenários distintos**, variando:
-- **Duração da chuva**: 5, 20, 60 minutos  
-- **Nível de impermeabilização**: 75%, 87,5%  
-- **Curve Number (CN)**: 85 (lotes), 98 (ruas)  
-
-Para cada cenário, foram gerados:
-- Arquivos `.rpt` e `.out` (resultados brutos do SWMM)  
-- Gráficos individuais das curvas de profundidade em nós selecionados  
-- Arquivos `.csv` com estatísticas hidrológicas por sub-bacia  
-- Classificação hidráulica das bocas de lobo: **Normal, Sobrecarga ou Transbordamento**
+## 1. Context
+This repository contains the files, scripts, and reports generated from hydrological and hydraulic simulations using the **Storm Water Management Model (SWMM)**.  
+The objective is to analyze the behavior of the urban drainage system under different rainfall, imperviousness, and soil parameter scenarios, as well as to consolidate datasets for use in **supervised machine learning models**.
 
 ---
 
-### (ii) Construção da base de dados consolidada
-A partir das simulações, foi criada uma tabela onde cada linha representa uma **sub-bacia**, contendo:
+## 2. Execution Plan
 
-**Variáveis geométricas e hidrológicas (X):**
-- Área da sub-bacia (m²)  
-- Percentual de impermeabilização (%)  
+### (i) Simulation of urban scenarios in SWMM
+A total of **8 distinct scenarios** were simulated, varying:  
+- **Rainfall duration**: 5, 20, 60 minutes  
+- **Imperviousness levels**: 75%, 87.5%  
+- **Curve Number (CN)**: 85 (lots), 98 (streets)  
+
+For each scenario, the following outputs were generated:  
+- `.rpt` and `.out` files (raw SWMM outputs)  
+- Individual plots of depth curves at selected nodes  
+- `.csv` files containing hydrological statistics per subcatchment  
+- Hydraulic classification of storm drains: **Normal, Overloaded, or Overflow**
+
+---
+
+### (ii) Construction of the consolidated database
+From the simulations, a table was created where each row represents a **subcatchment**, containing:
+
+**Geometric and hydrological explanatory variables (X):**
+- Subcatchment area (m²)  
+- Imperviousness (%)  
 - Curve Number (CN)  
-- Tipo da sub-bacia (lote ou rua)  
-- Comprimento do escoamento superficial (m)  
-- Declividade média do terreno (%)  
-- Duração da chuva (min)  
-- Volume total de precipitação (mm)  
-- Profundidade máxima (m)  
-- Tempo até o pico (min)  
-- Razão profundidade/altura da caixa de inspeção (adimensional)  
+- Subcatchment type (lot or street)  
+- Overland flow path length (m)  
+- Average terrain slope (%)  
+- Rainfall duration (min)  
+- Total precipitation volume (mm)  
+- Maximum depth (m)  
+- Time to peak (min)  
+- Depth/inspection chamber height ratio (dimensionless)  
 
-**Variáveis edáficas (quando simuladas via Green-Ampt):**
-- Condutividade hidráulica do solo saturado (Ksat, mm/h)  
-- Sucção na frente de infiltração (Ψ, mm)  
-- Umidade inicial do solo (θinit, fração)  
-- Profundidade efetiva da camada de solo (m)  
-- Textura do solo (arenoso, franco, argiloso etc.)  
+**Soil-related explanatory variables (when simulated via Green-Ampt):**
+- Saturated hydraulic conductivity (Ksat, mm/h)  
+- Suction head at wetting front (Ψ, mm)  
+- Initial soil moisture (θinit, fraction)  
+- Effective soil layer depth (m)  
+- Soil texture (categorical: sandy, loam, clay, etc.)  
 
-**Variável-alvo (y):**
-- Classe operacional da boca de lobo: **Normal / Sobrecarga / Transbordamento**
+**Target variable (y):**
+- Operational class of storm drain: **Normal / Overloaded / Overflow**
 
-O resultado final é o arquivo **`df_final.csv`**, consolidando todas as colunas explicativas e a classificação alvo.
-
----
-
-## 3. Estrutura dos scripts e saídas
-
-### Scripts principais
-- **`scenarios_peak_depth_analysis.py`** → analisa profundidade em um único cenário  
-- **`scenarios_global_peak_analysis.py`** → consolida estatísticas e curvas entre cenários  
-- **`scenarios_input_audit.py`** → audita arquivos de entrada (.csv)  
-- **`scenarios_data_extractor.py`** → extrai e organiza variáveis hidrológicas, hidráulicas e edáficas  
-
-### Saídas geradas
-- Estatísticas em `.csv` (máximo, mínimo, média, desvio padrão)  
-- Séries temporais em `.png` ou `.pdf`  
-- Relatórios de auditoria em `.txt`  
-- Bases estruturadas em `.csv` e `.parquet`  
+The final consolidated dataset is stored in **`df_final.csv`**, including all explanatory variables and the corresponding target classification.
 
 ---
 
-## 4. Estrutura de pastas
+## 3. Scripts and Outputs
 
+### Main scripts
+- **`scenarios_peak_depth_analysis.py`** → analyzes depth in a single scenario  
+- **`scenarios_global_peak_analysis.py`** → consolidates statistics and curves across scenarios  
+- **`scenarios_input_audit.py`** → audits input `.csv` files  
+- **`scenarios_data_extractor.py`** → extracts and organizes hydrological, hydraulic, and soil variables  
+
+### Generated outputs
+- `.csv` statistics (maximum, minimum, mean, standard deviation)  
+- Time series plots in `.png` or `.pdf`  
+- Audit reports in `.txt`  
+- Structured datasets in `.csv` and `.parquet`  
+
+---
+
+## 4. Folder Structure
 /scenarios
-├── scenarioXX.rpt # Arquivos originais do SWMM
+├── scenarioXX.rpt # Original SWMM report files
 ├── scenarioXX_peak_statistics.csv
 ├── scenarioXX_depth_timeseries.png / .pdf
-├── scenarioXX.csv # Dados estruturados
+├── scenarioXX.csv # Structured datasets
 ├── scenarioXX.parquet
 ├── scenarioXX_audit_report.txt
 ...
